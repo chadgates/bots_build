@@ -1,4 +1,4 @@
-# Version: 0.0.2
+# Version: 0.0.3
 FROM ubuntu:14.04
 MAINTAINER Wassilios Lytras "w.lytras@bluewin.ch"
 
@@ -7,7 +7,11 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 
 # Install basic applications
-RUN apt-get install -y tar git curl nano wget dialog net-tools build-essential
+#probably not going to need following anymore
+#RUN apt-get install -y tar git curl nano wget dialog net-tools build-essential
+
+# following needed for Paramiko library for SFTP
+RUN apt-get install -y build-essential libssl-dev libffi-dev
 
 # Install Python and Basic Python Tools
 RUN apt-get install -y python 
