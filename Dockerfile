@@ -44,7 +44,11 @@ RUN pip install xlrd
 RUN pip install isoweek
 RUN pip install pyinotify
 RUN pip install paramiko 
-RUN pip install cdecimal --allow-external cdecimal
+
+#RUN pip install cdecimal --allow-external cdecimal
+
+#install m3-cdecimal instead as above failed
+RUN pip install m3-cdecimal
 
 # start putting stuff here and folders and things  /usr/local/lib/python2.7/dist-packages/bots/config
 
