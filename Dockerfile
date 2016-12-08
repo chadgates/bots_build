@@ -57,7 +57,7 @@ COPY jobqueueserver.py /usr/local/lib/python2.7/dist-packages/bots/jobqueueserve
 
 # Copy Supervisord.conf file -> requires cron entries in future
 COPY supervisord.conf /etc/supervisor/supervisord.conf
-CMD ["/usr/bin/local/supervisord"]
+CMD ["/usr/local/bin/supervisord"]
 
 # start putting stuff here and folders and things  /usr/local/lib/python2.7/dist-packages/bots/config
 
