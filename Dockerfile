@@ -1,4 +1,4 @@
-# Version: 0.0.3
+# Version: 0.0.4
 FROM ubuntu:14.04
 MAINTAINER Wassilios Lytras "w.lytras@bluewin.ch"
 
@@ -11,7 +11,7 @@ RUN apt-get update
 #RUN apt-get install -y tar git curl nano wget dialog net-tools build-essential
 
 # following needed for Paramiko library for SFTP
-RUN apt-get install -y build-essential libssl-dev libffi-dev
+RUN apt-get install -y build-essential libssl-dev libffi-dev cron
 
 # Install Python and Basic Python Tools
 RUN apt-get install -y python 
@@ -44,12 +44,22 @@ RUN pip install xlrd
 RUN pip install isoweek
 RUN pip install pyinotify
 RUN pip install paramiko 
+RUN pip install pycrypto
+RUN pip install supervisor
 
 #RUN pip install cdecimal --allow-external cdecimal
 
 #install m3-cdecimal instead as above failed
 RUN pip install m3-cdecimal
 
+# Temporary Patch for jobqueueserver in bots 3.3.0
+COPY jobqueueserver.py /usr/local/lib/python2.7/dist-packages/bots/jobqueueserver.py
+
+# Copy Supervisord.conf file -> requires cron entries in future
+COPY supervisord.conf /etc/supervisor/supervisord.conf
+CMD ["/usr/bin/local/supervisord"]
+
 # start putting stuff here and folders and things  /usr/local/lib/python2.7/dist-packages/bots/config
 
 EXPOSE 8080
+EXPOSE 9001
