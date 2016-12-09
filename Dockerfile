@@ -39,8 +39,8 @@ RUN pip install m3-cdecimal==2.3
 COPY jobqueueserver.py /usr/local/lib/python2.7/dist-packages/bots/jobqueueserver.py
 
 # Install DevCron
-# RUN pip install https://bitbucket.org/dbenamy/devcron/get/tip.tar.gz
-RUN pip install -e hg+https://bitbucket.org/dbenamy/devcron#egg=devcron
+# failed, missing hg/mercurial : RUN pip install -e hg+https://bitbucket.org/dbenamy/devcron#egg=devcron
+RUN pip install https://bitbucket.org/dbenamy/devcron/get/tip.tar.gz
 
 
 # Copy Supervisord.conf file 
