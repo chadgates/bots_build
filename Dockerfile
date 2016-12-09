@@ -1,4 +1,4 @@
-# Version: 0.0.4
+# Version: 0.0.5
 FROM ubuntu:14.04
 MAINTAINER Wassilios Lytras "w.lytras@bluewin.ch"
 
@@ -6,12 +6,11 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
 
-# Install basic applications
-#probably not going to need following anymore
-#RUN apt-get install -y tar git curl nano wget dialog net-tools build-essential
+# Install requirements for Paramiko library for SFTP
+RUN apt-get install -y build-essential libssl-dev libffi-dev 
 
-# following needed for Paramiko library for SFTP
-RUN apt-get install -y build-essential libssl-dev libffi-dev cron
+# Install Cron to schedule jobs
+# RUN apt-get install -y cron
 
 # Install Python and Basic Python Tools
 RUN apt-get install -y python 
@@ -19,47 +18,41 @@ RUN apt-get install -y python-dev
 RUN apt-get install -y python-distribute 
 RUN apt-get install -y python-pip
 
-RUN pip install cherrypy
-RUN pip install genshi
-
-RUN pip install django==1.7
-RUN pip install bots
-#RUN mkdir -p /dir
-
-#WORKDIR /dir
-#RUN wget -O django.tar.gz https://www.djangoproject.com/download/1.7.8/tarball/
-#RUN tar -xf django.tar.gz
-#WORKDIR /dir/Django-1.7.8
-#RUN python setup.py install
-
-#WORKDIR /dir
-#RUN wget -O bots-3.2.0.tar.gz http://sourceforge.net/projects/bots/files/bots%20open%20source%20edi%20software/3.2.0/bots-3.2.0.tar.gz/download
-#RUN tar -xf bots-3.2.0.tar.gz
-#WORKDIR /dir/bots-3.2.0
-#RUN python setup.py install
-
+# Install MySQL Driver for Python 2
 RUN apt-get install -y python-mysqldb
-RUN pip install suds-jurko
-RUN pip install xlrd
-RUN pip install isoweek
-RUN pip install pyinotify
-RUN pip install paramiko 
-RUN pip install pycrypto
-RUN pip install supervisor
 
-#RUN pip install cdecimal --allow-external cdecimal
-
-#install m3-cdecimal instead as above failed
-RUN pip install m3-cdecimal
+# Install Python packages 
+RUN pip install cherrypy==8.1.2
+RUN pip install genshi==0.7
+RUN pip install django==1.7
+RUN pip install bots==3.3.0
+RUN pip install suds-jurko==0.6
+RUN pip install xlrd==1.0.0
+RUN pip install isoweek==1.3.1
+RUN pip install pyinotify==0.9.6
+RUN pip install paramiko==2.0.2 
+RUN pip install pycrypto==2.6.1
+RUN pip install supervisor==3.3.1
+RUN pip install m3-cdecimal==2.3
 
 # Temporary Patch for jobqueueserver in bots 3.3.0
 COPY jobqueueserver.py /usr/local/lib/python2.7/dist-packages/bots/jobqueueserver.py
 
-# Copy Supervisord.conf file -> requires cron entries in future
+# Install DevCron
+# RUN pip install https://bitbucket.org/dbenamy/devcron/get/tip.tar.gz
+RUN pip install -e hg+https://bitbucket.org/dbenamy/devcron#egg=devcron
+
+
+# Copy Supervisord.conf file 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 CMD ["/usr/local/bin/supervisord"]
 
-# start putting stuff here and folders and things  /usr/local/lib/python2.7/dist-packages/bots/config
+# Map persisted files to following directories: 
+# /usr/local/lib/python2.7/dist-packages/bots/config
+# /usr/local/lib/python2.7/dist-packages/bots/botssys
+# /usr/local/lib/python2.7/dist-packages/bots/usersys
 
+# BOTS Management Interface
 EXPOSE 8080
+# Supervisord HTTP Server
 EXPOSE 9001
