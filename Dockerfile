@@ -1,22 +1,22 @@
 # Version: 3.3.0
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 MAINTAINER Wassilios Lytras "w.lytras@bluewin.ch"
 
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
+RUN apt-get install -y apt-utils
 
 # Install requirements for Paramiko (Cryptography) library for SFTP
 RUN apt-get install -y build-essential libssl-dev libffi-dev 
-
-# Install Cron to schedule jobs
-# RUN apt-get install -y cron
 
 # Install Python and Basic Python Tools
 RUN apt-get install -y python 
 RUN apt-get install -y python-dev 
 RUN apt-get install -y python-distribute 
 RUN apt-get install -y python-pip
+
+RUN pip install --upgrade pip
 
 # Install MySQL Driver for Python 2
 RUN apt-get install -y python-mysqldb
@@ -26,7 +26,6 @@ RUN apt-get install -y python-psycopg2
 RUN pip install psycopg2
 
 # Install Python packages 
-
 RUN pip install cherrypy==8.1.2
 RUN pip install genshi==0.7
 RUN pip install django==1.7
@@ -46,7 +45,6 @@ COPY jobqueueserver.py /usr/local/lib/python2.7/dist-packages/bots/jobqueueserve
 # Install DevCron
 # failed, missing hg/mercurial : RUN pip install -e hg+https://bitbucket.org/dbenamy/devcron#egg=devcron
 RUN pip install https://bitbucket.org/dbenamy/devcron/get/tip.tar.gz
-
 
 # Copy Supervisord.conf file 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
