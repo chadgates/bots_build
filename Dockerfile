@@ -1,4 +1,4 @@
-# Version: 0.0.5
+# Version: 3.3.0
 FROM ubuntu:14.04
 MAINTAINER Wassilios Lytras "w.lytras@bluewin.ch"
 
@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
 
-# Install requirements for Paramiko library for SFTP
+# Install requirements for Paramiko (Cryptography) library for SFTP
 RUN apt-get install -y build-essential libssl-dev libffi-dev 
 
 # Install Cron to schedule jobs
@@ -21,7 +21,12 @@ RUN apt-get install -y python-pip
 # Install MySQL Driver for Python 2
 RUN apt-get install -y python-mysqldb
 
+# Install PostgreSQL Driver for Python2
+RUN apt-get install -y python-psycopg2
+RUN pip install psycopg2
+
 # Install Python packages 
+
 RUN pip install cherrypy==8.1.2
 RUN pip install genshi==0.7
 RUN pip install django==1.7
