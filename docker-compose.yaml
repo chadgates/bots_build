@@ -1,0 +1,18 @@
+version: '3'
+
+# Running BOTS with JobQueue Server enabled.
+# The Supervisor uses environment variables SUPERVUSER for HTTP user login and
+# SUPERVPASS for password.
+
+services:
+  bots-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "0.0.0.0:8080:8080"
+      - "0.0.0.0:9001:9001"
+    environment:
+      - SUPERVUSER=bots
+      - SUPERVPASS=botsbots
+    command: /usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf
