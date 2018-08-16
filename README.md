@@ -17,7 +17,7 @@ In addition, following tools are used to control the environment:
 ## Docker Compose File
 The docker compose file stored at the root of this repo, may be used to create the instance of BOTS by issueing: 
 
-	docker-composer -f docker-compose.yaml up 
+	docker-compose up -d
 	
 
 Docker will then build BOTS based Alpine Linux 3.6 and Python 2.7. Some Python packages would not install under Alpine 
@@ -33,7 +33,7 @@ Port 9001 is used for Supervisor HTTP interface
   	  bots-server:
   	    build:
           context: .
-          dockerfile: ./compose/bots_complete/Dockerfile
+          dockerfile: Dockerfile
         ports:
           - "0.0.0.0:8080:8080"
           - "0.0.0.0:9001:9001"
@@ -41,9 +41,10 @@ Port 9001 is used for Supervisor HTTP interface
           - SUPERVUSER=bots
           - SUPERVPASS=botsbots
         command: /usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf	
+
 After the build, one can connect to the terminal as follows: 
 
-	docker exec -i -t bots_bots-server_1 /bin/bash
+	docker exec -i -t bots_build_bots-server_1 /bin/sh
 
 To share local directories with the dockerized BOTS instance, add following to the corresponding entries (example below)docker-compose file. 
 
@@ -52,7 +53,15 @@ To share local directories with the dockerized BOTS instance, add following to t
       - ./botssys:/usr/local/lib/python2.7/dist-packages/bots/botssys
       - ./usersys:/usr/local/lib/python2.7/dist-packages/bots/usersys
 
+## Connecting
 
+
+BOTS then runs on http://localhost:8080 
+Supervisord run on http://localhost:9001 
+
+For both, the initial credentials are: 
+user: bots
+password: botsbots
 	
 ## The postinstall file
 The postinstall changes the default bots.ini to enable: 
@@ -75,6 +84,6 @@ Commercial support by EbberConsult, http://www.ebbersconsult.com
 
 The source file added to this repository is simply for convenience on deployment, as download failed in Alpine Linux. 
 This should be patched/fixed eventually. 
-
+ 
 ## License
 All files except for the bots source file bots-3.2.0.tar.gz are under MIT License. 
