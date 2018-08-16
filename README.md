@@ -17,7 +17,7 @@ In addition, following tools are used to control the environment:
 ## Docker Compose File
 The docker compose file stored at the root of this repo, may be used to create the instance of BOTS by issueing: 
 
-	docker-composer -f docker-compose.yaml up 
+	docker-compose up 
 	
 
 Docker will then build BOTS based Alpine Linux 3.6 and Python 2.7. Some Python packages would not install under Alpine 
@@ -33,7 +33,7 @@ Port 9001 is used for Supervisor HTTP interface
   	  bots-server:
   	    build:
           context: .
-          dockerfile: ./compose/bots_complete/Dockerfile
+          dockerfile: Dockerfile
         ports:
           - "0.0.0.0:8080:8080"
           - "0.0.0.0:9001:9001"
@@ -43,7 +43,7 @@ Port 9001 is used for Supervisor HTTP interface
         command: /usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf	
 After the build, one can connect to the terminal as follows: 
 
-	docker exec -i -t bots_bots-server_1 /bin/bash
+	docker exec -i -t bots_build_bots-server_1 /bin/sh
 
 To share local directories with the dockerized BOTS instance, add following to the corresponding entries (example below)docker-compose file. 
 
