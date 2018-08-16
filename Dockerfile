@@ -1,50 +1,50 @@
-# Version: 3.3.0
-FROM ubuntu:16.04
-MAINTAINER Wassilios Lytras "w.lytras@bluewin.ch"
+# Version: 3.2.0
+FROM python:2.7-alpine3.6
+LABEL maintainer="w.lytras@bluewin.ch"
 
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN apt-get update
-RUN apt-get install -y apt-utils
-
+RUN apk update 
 # Install requirements for Paramiko (Cryptography) library for SFTP
-RUN apt-get install -y build-essential libssl-dev libffi-dev 
-
-# Install Python and Basic Python Tools
-RUN apt-get install -y python 
-RUN apt-get install -y python-dev 
-RUN apt-get install -y python-distribute 
-RUN apt-get install -y python-pip
-
-RUN pip install --upgrade pip
-
-# Install MySQL Driver for Python 2
-RUN apt-get install -y python-mysqldb
+# TODO: Verify if really needed.... 
+RUN apk add --no-cache libffi-dev libressl-dev
 
 # Install PostgreSQL Driver for Python2
-RUN apt-get install -y python-psycopg2
+RUN apk add --no-cache --virtual build-deps gcc python-dev musl-dev && \
+    apk add postgresql-dev
+
 RUN pip install psycopg2
 
-# Install Python packages 
-RUN pip install cherrypy==8.1.2
-RUN pip install genshi==0.7
-RUN pip install django==1.7
-RUN pip install bots==3.3.0
-RUN pip install suds-jurko==0.6
-RUN pip install xlrd==1.0.0
-RUN pip install isoweek==1.3.1
-RUN pip install pyinotify==0.9.6
-RUN pip install paramiko==2.0.2 
-RUN pip install pycrypto==2.6.1
-RUN pip install supervisor==3.3.1
-RUN pip install m3-cdecimal==2.3
+# Install MySQL Driver for Python 2
+RUN apk add py-mysqldb 
 
-# Temporary Patch for jobqueueserver in bots 3.3.0
-COPY jobqueueserver.py /usr/local/lib/python2.7/dist-packages/bots/jobqueueserver.py
+# Requirement for lxml 
+RUN apk add --update --no-cache libc-dev libxslt-dev
+
+# Make installation directory and change to there
+RUN mkdir /install
+WORKDIR /install
+
+# Install Python packages
+COPY requirements requirements
+RUN pip install -r requirements/production.txt
+
+# BOTS installation
+COPY bots-3.2.0.tar.gz bots-3.2.0.tar.gz
+
+RUN tar -xf bots-3.2.0.tar.gz && \
+    cd bots-3.2.0 && \
+    python setup.py install && \
+    cd ..
+
+COPY postinstall.py postinstall.py
+RUN python postinstall.py
 
 # Install DevCron
 # failed, missing hg/mercurial : RUN pip install -e hg+https://bitbucket.org/dbenamy/devcron#egg=devcron
 RUN pip install https://bitbucket.org/dbenamy/devcron/get/tip.tar.gz
+
+# Add Crontab file
+COPY crontab /usr/local/lib/python2.7/dist-packages/bots/config/
+
 
 # Copy Supervisord.conf file 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
