@@ -31,7 +31,7 @@ RUN pip install -r requirements/production.txt
 COPY 3.3.0.tar.gz 3.3.0.tar.gz
 
 RUN tar -xf 3.3.0.tar.gz && \
-    cd 3.3.0 && \
+    cd bots-3.3.0 && \
     python setup.py install && \
     cd ..
 
