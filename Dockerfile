@@ -28,10 +28,10 @@ COPY requirements requirements
 RUN pip install -r requirements/production.txt
 
 # BOTS installation
-COPY bots-3.2.0.tar.gz bots-3.2.0.tar.gz
+COPY 3.3.0.tar.gz 3.3.0.tar.gz
 
-RUN tar -xf bots-3.2.0.tar.gz && \
-    cd bots-3.2.0 && \
+RUN tar -xf 3.3.0.tar.gz && \
+    cd 3.3.0 && \
     python setup.py install && \
     cd ..
 

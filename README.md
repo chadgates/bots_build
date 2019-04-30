@@ -86,4 +86,4 @@ The source file added to this repository is simply for convenience on deployment
 This should be patched/fixed eventually. 
  
 ## License
-All files except for the bots source file bots-3.2.0.tar.gz are under MIT License. 
+All files except for the bots source file 3.3.0.tar.gz are under MIT License. 
