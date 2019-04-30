@@ -1,5 +1,8 @@
 # The BOTS Dockerfile
 
+## Scope
+This is only for BOTS Version 3.2. For the forked version of BOTS-EDI (3.3), check the repository of that version for docker files: https://github.com/bots-edi/bots/tree/master/compose
+
 ## Introduction 
 This dockerized version should provide a quick installable version of BOTS that runs "out of the box". 
 
