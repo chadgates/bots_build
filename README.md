@@ -52,9 +52,9 @@ After the build, one can connect to the terminal as follows:
 To share local directories with the dockerized BOTS instance, add following to the corresponding entries (example below)docker-compose file. 
 
 	volumes:
-      - ./config:/usr/local/lib/python2.7/dist-packages/bots/config
-      - ./botssys:/usr/local/lib/python2.7/dist-packages/bots/botssys
-      - ./usersys:/usr/local/lib/python2.7/dist-packages/bots/usersys
+      - ./config:/usr/local/lib/python2.7/site-packages/bots/config
+      - ./botssys:/usr/local/lib/python2.7/site-packages/bots/botssys
+      - ./usersys:/usr/local/lib/python2.7/site-packages/bots/usersys
 
 ## Connecting
 
@@ -77,7 +77,7 @@ Read more here: [Supervisord.org](http://supervisord.org)
 
 ## crontab
 The crontab file is copied to the bots/config directory from where the dev-cron is started. When the file is changed, the service may require to be restarted to get the updates (untested..., but definitly if the host is shared from the host). 
-Read more here: [DevCron](https://bitbucket.org/dbenamy/devcron/overview)
+Read more here: [DevCron](https://github.com/dbenamy/devcron)
 
 ## Bots
 Bots sourceforge web site: http://bots.sourceforge.net
