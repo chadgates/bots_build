@@ -23,10 +23,9 @@ The docker compose file stored at the root of this repo, may be used to create t
 	docker-compose up -d
 	
 
-Docker will then build BOTS based Alpine Linux 3.6 and Python 2.7. Some Python packages would not install under Alpine 
-Linux 3.8 due to dependencies on libraries that were not compatible. 
+Docker will then build BOTS based Python 2.7 slim image. It builds with Postgres and MySQL support. 
 
-Supervisor's http log-in can be passwort protected through environment variables, here defined as SUPERVUSER and SUPERVPASS. 
+Supervisor's http log-in can be password protected through environment variables, here defined as SUPERVUSER and SUPERVPASS. 
 
 Port 8080 is used to provide BOTS Web interface
 Port 9001 is used for Supervisor HTTP interface
